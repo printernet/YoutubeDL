@@ -1,0 +1,16 @@
+{
+  "name": "youtubedl",
+  "version": "1.0.0",
+  "description": "youtube downloader",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cli-progress": "^2.1.0",
+    "youtube-playlist": "^1.0.1",
+    "ytdl-core": "^0.27.0"
+  }
+}
