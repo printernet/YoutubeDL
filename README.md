@@ -8,3 +8,7 @@ TODO:
 - incorporate https://www.npmjs.com/package/youtube-info
 - download status?
 - temporary files until complete
+- add support for other qualities
+- add support for mp3?
+- add support for output directory
+- add CLI --help
