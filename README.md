@@ -2,9 +2,9 @@
 
 You can pass it multiple playlists
 
-It will download each playlist concurrently.
+It will download each playlist consecutively.
 
-It will download all the songs on a playlist at once. (TODO: Fix this)
+It will download all the songs on a playlist at concurrently. (TODO: Fix this)
 
 TODO:
 - Download throttling / limiting (still downloads all)
