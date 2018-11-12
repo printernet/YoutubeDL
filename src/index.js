@@ -9,7 +9,7 @@ import View from './view.js';
 import Playlists from './playlists.js';
 import Downloader from './download.js';
 
-var args = process.argv.slice( 2 );
+// var args = process.argv.slice( 2 );
 
 // const TEST_ARGS_BAD = ["https://www.youtube.com/playlist?list=PLQkQfzsIUwRYJt9v3lOZqTH9HNi9Ewnsn", "boop prop", "https://", "playlist", "https://www.youtube.com/playlist?list=2984fy2398fy2398y23f9823yf928y"];
 // const TEST_ARGS_GOOD_MULTI = [
@@ -21,7 +21,12 @@ var args = process.argv.slice( 2 );
 //   "https://www.youtube.com/playlist?list=PL50KW6aT4Ugz6FqtCJftO9ZcXhUpQELqb"
 // ];
 
-//var args = TEST_ARGS_GOOD_SINGLE;
+const TEST_ARGS_GOOD_TWOSHORT = [
+  "https://www.youtube.com/playlist?list=PLHyj081b8bfOx7J3scgjkgp5P29h2qR13",
+  "https://www.youtube.com/playlist?list=PLHyj081b8bfNyZqDsihgjfY8FJ6y_Lv2x"
+];
+
+var args = TEST_ARGS_GOOD_TWOSHORT;
 
 // TEMP VARS FOR TESTING, CONVERT THESE TO CMDLINE ARGS
 const limit_dls = 4;
