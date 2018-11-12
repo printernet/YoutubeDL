@@ -60,7 +60,7 @@ const Downloader = (function () {
             const video_title = obj.list[key].title;
 
             // each video title truncated
-            const video_label = (video_title.length > 30) ? video_title.substring(0,30)+'..' : video_title;
+            const video_label = (video_title.length > 30) ? video_title.substring(0,28)+'..' : video_title;
 
             // each video url
             const url = obj.list[key].url;
