@@ -4,10 +4,14 @@ You can pass it multiple playlists
 
 It will download each playlist consecutively.
 
-It will download all the songs on a playlist at concurrently. (TODO: Fix this)
+It will download 4 items concurrently. (You can set this in index.js) TODO: make this a cmdline arg
 
 TODO:
-- Download throttling / limiting (still downloads all)
+
+- cmdline args
+- code cleanup
+- documentation
+- testing
 - temporary files until complete
 - add support for other qualities
 - add support for mp3?

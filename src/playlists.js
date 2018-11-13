@@ -128,7 +128,6 @@ const Playlists = (function() {
 
 
                 // After all meta data is collected we pass the playlists object back to the controller
-                // I think we have to return a resolved promise here
                 Promise.all(addMetaData_promises)
                   .then((res) => resolve( playlists )) // here we resolve the main returned promise and expose playlists
                   .catch( (error) => {

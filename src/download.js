@@ -6,6 +6,7 @@ const Downloader = (function () {
   const fs = require('fs');
   const ytdl = require('ytdl-core');
   const sanitizeFilename = require("sanitize-filename");
+  const PQueue = require('p-queue');
 
   let dl_limit = 4;
   let save_path = __dirname + "/../downloads/";
@@ -22,19 +23,88 @@ const Downloader = (function () {
     save_path = string;
     return Downloader;
   }
+  // const getPlaylistsBatched = (obj, dl_limit) => {
+  //   let batch = [];
+  //   obj.batches = [];
+  //
+  //   for (let item in obj.list){
+  //     batch.push(obj.list[item])
+  //     // start a new batch IF
+  //     // item index+1 is a multiple of dl_limit
+  //     if ( (Number(item) + 1) % dl_limit === 0 ){
+  //       obj.batches.push(batch);
+  //       batch = [];
+  //     }
+  //   }
+  //   if(batch.length != 0)
+  //     obj.batches.push(batch); // push remaining to last batch
+  //   return obj;
+  // }
 
 
   // get MP4s
   const getMP4s = (obj) => {
+    const downloadSingle = (obj) => {
 
 
 
+          const video_file_name = sanitizeFilename(obj.title).substring(0, 100);
+
+
+          const video_title = obj.title;
+
+          // each video title truncated
+          const video_label = (video_title.length > 30) ? video_title.substring(0,28)+'..' : video_title;
+
+          // each video url
+          const url = obj.url;
+
+
+
+          let status_bar;
+          let prev_total = 0;
+
+          return new Promise(
+            (resolve, reject) => {
+              ytdl(url, { filter: (format) => format.container === 'mp4' })
+                .on('response', function(res){
+
+                  const total_bytes = parseInt(res.headers['content-length'], 10);
+                  //console.log(total_bytes)
+                  status_bar = View.addBar(total_bytes);
+
+
+
+
+                })
+
+                .on( 'error', function(error){
+                  reject(error);
+                })
+
+                .on( 'progress', function(a,b,c){
+                  // b gives us a running total
+                  let diff = b - prev_total; // so we subtract the previous total
+                  View.tickBar(status_bar, video_label, diff); // write the delta
+                  prev_total = b; // and store the previous total for the next round
+                })
+                .on('finish', function() {
+                  resolve()
+                })
+                .pipe(
+                  fs.createWriteStream(save_path + video_file_name + ".mp4")
+                    .on('error', (error) => reject(error))
+                );
+
+            }); //single download promise
+
+
+
+
+    }; // downloadSingle()
 
     return new Promise(
       (resolve, reject) => {
-
-
-
 
         const playlist_name = obj.name;
         View.printMessage("Downloading Playlist: " + playlist_name);
@@ -42,80 +112,52 @@ const Downloader = (function () {
 
         View.printLineBreaks(2);
 
-        // setTimeout(() => resolve(obj), 5000);
+        // getPlaylistsBatched(obj, dl_limit).batches
 
-        // mapping over individual downloads here
-        let download_promises = Object.keys(obj.list)
-          .map(function(key) {
-
-            // We need to build in some kind of throttling / limiting
-            // to accomplish this we need a serilized promise structure like we're using
-            // on index.js and we need to split up the incoming object here (obj) into
-            // parts of length dl_limit. We will then send each chunk into the downloader
-            // seriliazed
-
-            const video_file_name = sanitizeFilename(obj.list[key].title).substring(0, 100);
-
-
-            const video_title = obj.list[key].title;
-
-            // each video title truncated
-            const video_label = (video_title.length > 30) ? video_title.substring(0,28)+'..' : video_title;
-
-            // each video url
-            const url = obj.list[key].url;
+        const downloads_queue = new PQueue({concurrency: dl_limit});
+        // map over the list of files
+        Object.keys(obj.list).map(item => {
+          downloads_queue.add(() => downloadSingle(obj.list[item])
+                                      .catch((error) => {
+                                         Controller.handleError(error);
+                                      })
+          ); // download and add promise to queue
+        })
+        downloads_queue.onIdle().then(() => {
+        
+          View.haltBars(); // Shut down the status bars
+          View.printLineBreaks(2);
+          resolve();
+        });
 
 
+          // .reduce(function(p, item) {
+          //    return p.then(function() {
+          //
+          //       // all of the downloads
+          //        Promise.all(downloadBatch(item))
+          //          .then(() => {
+          //            View.haltBars(); // Shut down the status bars
+          //            View.printLineBreaks(2);
+          //            resolve(); //resolve the outer propmise
+          //          })
+          //          .catch( (error) => {
+          //            Controller.handleError(error);
+          //          });
+          //    });
+          // }, Promise.resolve())
+          // .then(function(result) {
+          //   // here all of the playlist has been downloaded in batches
+          //   //resolve(); // resolve the outermost promise returning control to the playlist serializer in index.js
+          // });
 
-            let status_bar;
-            let prev_total = 0;
-
-            return new Promise(
-              (resolve, reject) => {
-                ytdl(url, { filter: (format) => format.container === 'mp4' })
-                  .on('response', function(res){
-
-                    const total_bytes = parseInt(res.headers['content-length'], 10);
-                    //console.log(total_bytes)
-                    status_bar = View.addBar(total_bytes);
 
 
 
 
-                  })
 
-                  .on( 'error', function(error){
-                    reject(error);
-                  })
 
-                  .on( 'progress', function(a,b,c){
-                    // b gives us a running total
-                    let diff = b - prev_total; // so we subtract the previous total
-                    View.tickBar(status_bar, video_label, diff); // write the delta
-                    prev_total = b; // and store the previous total for the next round
-                  })
-                  .on('finish', function() {
-                    resolve()
-                  })
-                  .pipe(
-                    fs.createWriteStream(save_path + video_file_name + ".mp4")
-                      .on('error', (error) => reject(error))
-                  );
 
-              }); //single download promise
-
-          }); // download_promises .map
-
-          Promise.all(download_promises)
-            .then(() => {
-
-              View.haltBars(); // Shut down the status bars
-              View.printLineBreaks(2);
-              resolve(playlist_name);
-            })
-            .catch( (error) => {
-              Controller.handleError(error);
-            });
 
 
 

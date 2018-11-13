@@ -12,11 +12,11 @@ import Downloader from './download.js';
 // var args = process.argv.slice( 2 );
 
 // const TEST_ARGS_BAD = ["https://www.youtube.com/playlist?list=PLQkQfzsIUwRYJt9v3lOZqTH9HNi9Ewnsn", "boop prop", "https://", "playlist", "https://www.youtube.com/playlist?list=2984fy2398fy2398y23f9823yf928y"];
-// const TEST_ARGS_GOOD_MULTI = [
-//   "https://www.youtube.com/playlist?list=PL50KW6aT4Ugz6FqtCJftO9ZcXhUpQELqb",
-//   "https://www.youtube.com/playlist?list=PLyIVzbHD-NzLFfcAjSR_BQgl7qbejVQTp",
-//   "https://www.youtube.com/playlist?list=PLbgqvuoYGITffYqX41_R8fcb6EGe0f7Ob"
-// ];
+const TEST_ARGS_GOOD_MULTI = [
+  "https://www.youtube.com/playlist?list=PL50KW6aT4Ugz6FqtCJftO9ZcXhUpQELqb",
+  "https://www.youtube.com/playlist?list=PLyIVzbHD-NzLFfcAjSR_BQgl7qbejVQTp",
+  "https://www.youtube.com/playlist?list=PLbgqvuoYGITffYqX41_R8fcb6EGe0f7Ob"
+];
 // const TEST_ARGS_GOOD_SINGLE = [
 //   "https://www.youtube.com/playlist?list=PL50KW6aT4Ugz6FqtCJftO9ZcXhUpQELqb"
 // ];
@@ -26,7 +26,7 @@ const TEST_ARGS_GOOD_TWOSHORT = [
   "https://www.youtube.com/playlist?list=PLHyj081b8bfNyZqDsihgjfY8FJ6y_Lv2x"
 ];
 
-var args = TEST_ARGS_GOOD_TWOSHORT;
+var args = TEST_ARGS_GOOD_MULTI;
 
 // TEMP VARS FOR TESTING, CONVERT THESE TO CMDLINE ARGS
 const limit_dls = 4;
