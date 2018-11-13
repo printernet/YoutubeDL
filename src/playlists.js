@@ -61,8 +61,10 @@ const Playlists = (function() {
 
     } // addMetaData
 
-    // remove empty elements defaults to null
-    // optional match argument (eg [] or {})
+    // returns false for strings of null, undefined, and ""
+    // returns true for non empty strings
+    // returns false for empty objects or arrays
+    // returns true for populated objects or arrays
     const isNotEmpty = (item) => {
       if (typeof item == "string")
         return (item != null && item != undefined && item != "")
