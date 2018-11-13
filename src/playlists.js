@@ -32,7 +32,7 @@ const Playlists = (function() {
       // an array to collect promises in
       let promises_getVideoInfo = [];
 
-      // we are going to return a list so make one from the input array
+      // we are going to return an obj so make one from the input array
       const list = Object.assign({},arr);
 
 
