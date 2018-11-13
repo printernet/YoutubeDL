@@ -9,9 +9,15 @@ It will download 4 items concurrently. (You can set this in index.js) TODO: make
 TODO:
 
 - cmdline args
+  - download limit
+  - path
+  - download playlists consecutively or concurrently?
+  - verbosity high or low
 - code cleanup
 - documentation
 - testing
+- install instructions
+- production build package.json
 - temporary files until complete
 - add support for other qualities
 - add support for mp3?
