@@ -13,6 +13,7 @@ TODO:
   - path
   - download playlists consecutively or concurrently?
   - verbosity high or low
+- View spinner for asynchronous operations
 - code cleanup
 - documentation
 - testing
