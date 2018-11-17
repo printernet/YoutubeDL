@@ -13,6 +13,7 @@ TODO:
   - path
   - download playlists consecutively or concurrently?
   - verbosity high or low
+  - create folder for each playlist?
 - View spinner for asynchronous operations
 - code cleanup
 - documentation
